@@ -1,6 +1,7 @@
 package fr.utarwyn.endercontainers.inventory;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Multimap;
 import fr.utarwyn.endercontainers.Managers;
 import fr.utarwyn.endercontainers.compatibility.CompatibilityHelper;
 import fr.utarwyn.endercontainers.configuration.Files;
@@ -9,11 +10,23 @@ import fr.utarwyn.endercontainers.enderchest.EnderChest;
 import fr.utarwyn.endercontainers.enderchest.EnderChestManager;
 import fr.utarwyn.endercontainers.util.uuid.UUIDFetcher;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
+import org.bukkit.persistence.PersistentDataContainer;
 
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -60,6 +73,31 @@ public class EnderChestInventory extends AbstractInventoryHolder {
                 this.inventory.setItem(index, item);
             }
         });
+
+        ItemMeta meta = Bukkit.getItemFactory().getItemMeta(Material.GRAY_STAINED_GLASS_PANE);
+        meta.setDisplayName("");
+
+        int toolbarStart = (getRows() - 1) * 9;
+        this.inventory.setItem(toolbarStart, newBorder(meta));
+        this.inventory.setItem(toolbarStart + 1, newBorder(meta));
+        this.inventory.setItem(toolbarStart + 2, newBorder(meta));
+        this.inventory.setItem(toolbarStart + 3, newBorder(meta));
+        this.inventory.setItem(toolbarStart + 4, newBorder(meta));
+        this.inventory.setItem(toolbarStart + 5, newBorder(meta));
+        this.inventory.setItem(toolbarStart + 6, newBorder(meta));
+        this.inventory.setItem(toolbarStart + 7, newBorder(meta));
+
+        ItemStack back = new ItemStack(Material.BARRIER);
+        ItemMeta backItemMeta = back.getItemMeta();
+        backItemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&cBack"));
+        back.setItemMeta(backItemMeta);
+        this.inventory.setItem(toolbarStart + 8, back);
+    }
+
+    private ItemStack newBorder(ItemMeta meta) {
+        ItemStack stack = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        stack.setItemMeta(meta);
+        return stack;
     }
 
     /**
@@ -82,7 +120,7 @@ public class EnderChestInventory extends AbstractInventoryHolder {
         ItemStack[] containerContents = this.inventory.getContents();
 
         // Replace cache contents with container contents if filled
-        for (int i = 0; i < containerContents.length; i++) {
+        for (int i = 0; i < containerContents.length - 9; i++) {
             if (containerContents[i] != null) {
                 this.contents.put(i, containerContents[i]);
             } else {
@@ -96,7 +134,7 @@ public class EnderChestInventory extends AbstractInventoryHolder {
      */
     @Override
     protected int getRows() {
-        return this.chest.getRows();
+        return this.chest.getRows() + 1;
     }
 
     /**
@@ -135,4 +173,18 @@ public class EnderChestInventory extends AbstractInventoryHolder {
         }
     }
 
+    @Override
+    public boolean onClick(Player player, int slot) {
+        int toolbarStart = (getRows() - 1) * 9;
+        if (slot >= toolbarStart && slot < getRows() * 9) {
+
+            if (slot == toolbarStart + 8) {
+                player.performCommand("dm open bank-item");
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 }

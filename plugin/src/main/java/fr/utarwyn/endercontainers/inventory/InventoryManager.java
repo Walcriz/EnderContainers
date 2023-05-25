@@ -38,15 +38,18 @@ public class InventoryManager extends AbstractManager {
      */
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
-        Inventory inventory = event.getView().getTopInventory();
+        Inventory inventory = event.getInventory();
         this.getInventoryHolder(inventory).ifPresent(holder -> {
-            this.cancelClickEventIfRestricted(event, item -> holder.isItemMovingRestricted());
+            this.cancelClickEventIfRestricted(event, item -> holder.isItemMovingRestricted()); // Why, just why, I can't understand...
 
-            // Perform the action only when player clicks on a valid slot of the inventory
             int slot = event.getRawSlot();
             boolean validSlot = slot >= 0 && slot < inventory.getSize();
+            // Perform the action only when player clicks on a valid slot of the inventory
             if (validSlot) {
-                holder.onClick((Player) event.getWhoClicked(), slot);
+                boolean cancel = holder.onClick((Player) event.getWhoClicked(), slot);
+                if (cancel) {
+                    event.setCancelled(true);
+                }
             }
         });
     }

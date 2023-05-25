@@ -13,6 +13,8 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -155,9 +157,9 @@ public class EnderChestListMenu extends AbstractInventoryHolder {
      * {@inheritDoc}
      */
     @Override
-    public void onClick(Player player, int slot) {
+    public boolean onClick(Player player, int slot) {
         ItemStack item = this.inventory.getItem(slot);
-        if (item == null) return;
+        if (item == null) return false;
 
         // Check for previous/next page
         if (item.getType() == SKULL_MATERIAL) {
@@ -166,7 +168,7 @@ public class EnderChestListMenu extends AbstractInventoryHolder {
 
             this.reloadInventory();
             this.open(player);
-            return;
+            return false;
         }
 
         // Open the selected chest
@@ -177,6 +179,8 @@ public class EnderChestListMenu extends AbstractInventoryHolder {
             sound = CompatibilityHelper.searchSound("VILLAGER_NO", "ENTITY_VILLAGER_NO");
         }
         player.playSound(player.getLocation(), sound, 1f, 1f);
+
+        return false;
     }
 
     /**

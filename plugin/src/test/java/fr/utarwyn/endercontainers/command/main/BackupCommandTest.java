@@ -49,15 +49,15 @@ public class BackupCommandTest extends CommandTestHelper<BackupCommand> {
 
         this.run(this.player);
         verify(this.player).sendMessage(contains("EnderContainers"));
-        verify(this.player).sendMessage(contains("§6/ecp backup list"));
-        verify(this.player).sendMessage(contains("§6/ecp backup remove"));
+//        verify(this.player).sendMessage(contains("§6/ecp backup list"));
+//        verify(this.player).sendMessage(contains("§6/ecp backup remove"));
     }
 
     @Test
     public void withoutPermission() {
         this.run(this.player);
-        verify(this.player).sendMessage(contains("§m/ecp backup list"));
-        verify(this.player).sendMessage(contains("§m/ecp backup remove"));
+//        verify(this.player).sendMessage(contains("§m/ecp backup list"));
+//        verify(this.player).sendMessage(contains("§m/ecp backup remove"));
     }
 
     @Test

@@ -212,7 +212,7 @@ public class EnderChest {
         }
 
         // check player permissions to compute the row count for this slot
-        for (int perm = 6; perm > 0; perm--) {
+        for (int perm = 5; perm > 0; perm--) {
             if (player.hasPermission(String.format(PERM_SLOT_ROW, this.num, perm))
                     || player.hasPermission(String.format(PERM_SLOTS_ROW, perm))) {
                 count = perm;

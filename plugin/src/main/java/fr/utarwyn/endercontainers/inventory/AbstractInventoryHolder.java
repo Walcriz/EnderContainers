@@ -3,6 +3,8 @@ package fr.utarwyn.endercontainers.inventory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -41,7 +43,17 @@ public abstract class AbstractInventoryHolder implements InventoryHolder {
      * @return Number of fileld slots
      */
     public int getFilledSlotsNb() {
-        return (int) Arrays.stream(this.inventory.getContents()).filter(Objects::nonNull).count();
+        ItemStack[] itemStacks = this.inventory.getContents();
+
+        int count = 0;
+        for (int i = 0; i < itemStacks.length - 9; i++) {
+            if (itemStacks[i] == null)
+                continue;
+
+            count++;
+        }
+
+        return count;
     }
 
     /**
@@ -60,6 +72,10 @@ public abstract class AbstractInventoryHolder implements InventoryHolder {
      * @return value of the moveRestricted flag
      */
     public boolean isItemMovingRestricted() {
+        return this.itemMovingRestricted;
+    }
+
+    public boolean doSomethingOnSlot(int slot) {
         return this.itemMovingRestricted;
     }
 
@@ -87,9 +103,7 @@ public abstract class AbstractInventoryHolder implements InventoryHolder {
      * @param player The player who interacts with the inventory
      * @param slot   The slot where the player has clicked
      */
-    public void onClick(Player player, int slot) {
-        // Not implemented
-    }
+    public abstract boolean onClick(Player player, int slot);
 
     /**
      * Open the container to a specific player.
