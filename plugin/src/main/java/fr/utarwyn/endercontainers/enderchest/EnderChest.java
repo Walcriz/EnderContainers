@@ -202,6 +202,8 @@ public class EnderChest {
      * Computes player permissions if connected, or the cache otherwise.
      */
     public void updateRowCount() {
+        if (this.container != null)
+            this.container.updateContentsFromContainer();
         int count = 3;
         Player player = this.context.getOwnerAsObject();
 
@@ -221,6 +223,8 @@ public class EnderChest {
         }
 
         this.rows = count;
+        if (this.container != null)
+            this.container.reloadInventory();
     }
 
     /**

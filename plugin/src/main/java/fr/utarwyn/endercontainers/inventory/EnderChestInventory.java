@@ -74,18 +74,15 @@ public class EnderChestInventory extends AbstractInventoryHolder {
             }
         });
 
-        ItemMeta meta = Bukkit.getItemFactory().getItemMeta(Material.GRAY_STAINED_GLASS_PANE);
-        meta.setDisplayName("");
-
         int toolbarStart = (getRows() - 1) * 9;
-        this.inventory.setItem(toolbarStart, newBorder(meta));
-        this.inventory.setItem(toolbarStart + 1, newBorder(meta));
-        this.inventory.setItem(toolbarStart + 2, newBorder(meta));
-        this.inventory.setItem(toolbarStart + 3, newBorder(meta));
-        this.inventory.setItem(toolbarStart + 4, newBorder(meta));
-        this.inventory.setItem(toolbarStart + 5, newBorder(meta));
-        this.inventory.setItem(toolbarStart + 6, newBorder(meta));
-        this.inventory.setItem(toolbarStart + 7, newBorder(meta));
+        this.inventory.setItem(toolbarStart, newBorder());
+        this.inventory.setItem(toolbarStart + 1, newBorder());
+        this.inventory.setItem(toolbarStart + 2, newBorder());
+        this.inventory.setItem(toolbarStart + 3, newBorder());
+        this.inventory.setItem(toolbarStart + 4, newBorder());
+        this.inventory.setItem(toolbarStart + 5, newBorder());
+        this.inventory.setItem(toolbarStart + 6, newBorder());
+        this.inventory.setItem(toolbarStart + 7, newBorder());
 
         ItemStack back = new ItemStack(Material.BARRIER);
         ItemMeta backItemMeta = back.getItemMeta();
@@ -94,8 +91,10 @@ public class EnderChestInventory extends AbstractInventoryHolder {
         this.inventory.setItem(toolbarStart + 8, back);
     }
 
-    private ItemStack newBorder(ItemMeta meta) {
+    private ItemStack newBorder() {
         ItemStack stack = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta meta = stack.getItemMeta();
+        meta.setDisplayName(" ");
         stack.setItemMeta(meta);
         return stack;
     }

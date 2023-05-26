@@ -129,19 +129,19 @@ public abstract class AbstractInventoryHolder implements InventoryHolder {
     public void reloadInventory() {
         String title = this.getTitle();
         int size = this.getRows() * 9;
-        ItemStack[] itemStacks = new ItemStack[size];
+//        ItemStack[] itemStacks = new ItemStack[size];
 
         if (title.length() > 32) {
             title = title.substring(0, 32);
         }
 
-        if (this.inventory != null) {
-            ItemStack[] oldContents = this.inventory.getContents();
-            itemStacks = Arrays.copyOfRange(oldContents, 0, Math.min(oldContents.length, size));
-        }
+//        if (this.inventory != null) {
+//            ItemStack[] oldContents = this.inventory.getContents();
+//            itemStacks = Arrays.copyOfRange(oldContents, 0, Math.min(oldContents.length, size));
+//        }
 
         this.inventory = Bukkit.createInventory(this, size, title);
-        this.inventory.setContents(itemStacks);
+//        this.inventory.setContents(itemStacks);
 
         this.prepare();
 
