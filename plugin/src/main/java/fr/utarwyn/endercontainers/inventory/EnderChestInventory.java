@@ -179,7 +179,7 @@ public class EnderChestInventory extends AbstractInventoryHolder {
         if (slot >= toolbarStart && slot < getRows() * 9) {
 
             if (slot == toolbarStart + 8) {
-                player.performCommand("dm open bank-item");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "dm open bank-item " + player.getName());
             }
 
             return true;
